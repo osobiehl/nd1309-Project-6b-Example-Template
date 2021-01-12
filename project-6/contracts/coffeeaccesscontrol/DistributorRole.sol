@@ -3,8 +3,10 @@ pragma solidity ^0.4.24;
 // Import the library 'Roles'
 import "./Roles.sol";
 
+
 // Define a contract 'DistributorRole' to manage this role - add, remove, check
 contract DistributorRole {
+  using Roles for Roles.Role;
 
   // Define 2 events, one for Adding, and other for Removing
 event DistributorAdded(address indexed account);
@@ -44,7 +46,7 @@ event DistributorRemoved(address indexed account);
   // Define an internal function '_addDistributor' to add this role, called by 'addDistributor'
   function _addDistributor(address account) internal {
     distributors.add(account);
-    emit distributorAdded(account);
+    emit DistributorAdded(account);
   }
 
   // Define an internal function '_removeDistributor' to remove this role, called by 'removeDistributor'

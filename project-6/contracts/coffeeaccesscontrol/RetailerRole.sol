@@ -3,8 +3,10 @@ pragma solidity ^0.4.24;
 // Import the library 'Roles'
 import "./Roles.sol";
 
+
 // Define a contract 'RetailerRole' to manage this role - add, remove, check
 contract RetailerRole {
+  using Roles for Roles.Role;
 
   // Define 2 events, one for Adding, and other for Removing
   event RetailerAdded(address indexed account);
@@ -34,7 +36,7 @@ contract RetailerRole {
 
   // Define a function 'renounceRetailer' to renounce this role
   function renounceRetailer() public {
-    _removeRetailer(account);
+    _removeRetailer(msg.sender);
     
   }
 
