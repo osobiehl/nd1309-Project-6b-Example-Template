@@ -13,6 +13,11 @@ contract Ownable {
         emit TransferOwnership(address(0), origOwner);
     }
 
+     function kill() public {
+    if (msg.sender == origOwner) {
+      selfdestruct(origOwner);
+    }
+  }
     /// Look up the address of the owner
     function owner() public view returns (address) {
         return origOwner;

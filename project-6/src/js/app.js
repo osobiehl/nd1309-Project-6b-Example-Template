@@ -1,3 +1,4 @@
+const DEBUG = true;
 App = {
     web3Provider: null,
     contracts: {},
@@ -108,8 +109,8 @@ App = {
             App.contracts.SupplyChain = TruffleContract(SupplyChainArtifact);
             App.contracts.SupplyChain.setProvider(App.web3Provider);
             
-            App.fetchItemBufferOne();
-            App.fetchItemBufferTwo();
+           // App.fetchItemBufferOne();
+            //App.fetchItemBufferTwo();
             App.fetchEvents();
 
         });
@@ -166,8 +167,17 @@ App = {
     harvestItem: function(event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
-
+        App.readForm();
         App.contracts.SupplyChain.deployed().then(function(instance) {
+            
+            if (DEBUG){
+                console.log("logging harvestItem values . . .");
+                ['upc', 'metamaskAccountID', 'originFarmName', 'originFarmInformation', 'originFarmLatitude', 'originFarmLongitude', 'productNotes'].forEach(
+                    (key) => {
+                        console.log(App[key]);
+                    }
+                )   
+            }            
             return instance.harvestItem(
                 App.upc, 
                 App.metamaskAccountID, 
@@ -186,6 +196,7 @@ App = {
     },
 
     processItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -200,6 +211,7 @@ App = {
     },
     
     packItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -214,6 +226,7 @@ App = {
     },
 
     sellItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -230,6 +243,7 @@ App = {
     },
 
     buyItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -245,6 +259,7 @@ App = {
     },
 
     shipItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -259,6 +274,7 @@ App = {
     },
 
     receiveItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -273,6 +289,7 @@ App = {
     },
 
     purchaseItem: function (event) {
+        App.readForm();
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
@@ -287,6 +304,7 @@ App = {
     },
 
     fetchItemBufferOne: function () {
+        
     ///   event.preventDefault();
     ///    var processId = parseInt($(event.target).data('id'));
         App.upc = $('#upc').val();
@@ -297,6 +315,14 @@ App = {
         }).then(function(result) {
           $("#ftc-item").text(result);
           console.log('fetchItemBufferOne', result);
+          console.log(JSON.stringify(result));
+          if (DEBUG){
+              alert("bufferOne: "+ JSON.stringify({sku: result[0],
+            upc: result[1], ownerID: result[2],originFarmerID: result[3],
+            originFarmName: result[4], originFarmInformation: result[5],
+            originFarmLatitude: result[6], originFarmLongitude: result[7]
+        }));
+          }
         }).catch(function(err) {
           console.log(err.message);
         });
@@ -311,6 +337,14 @@ App = {
         }).then(function(result) {
           $("#ftc-item").text(result);
           console.log('fetchItemBufferTwo', result);
+          if (DEBUG){
+            alert("bufferTwo: "+ JSON.stringify({sku: result[0],
+          upc: result[1],   productID : result[2], productNotes: result[3],
+          productPrice: result[4], itemState: result[5],
+          distributorID: result[6], retailerID: result[7], 
+          consumerID: result[7]
+      }));
+    }
         }).catch(function(err) {
           console.log(err.message);
         });
